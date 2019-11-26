@@ -4,7 +4,8 @@
   "description": "제로초강의 노드백엔드 연습이다",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon app.js"
   },
   "author": "swonjiny.dev",
   "license": "ISC",
