@@ -133,26 +133,28 @@ router.post('/login' ,isNotLoggedIn, (req, res, next)=>{
             const userInfo = await db.User.findOne({
                 where : {id : user.id},
                 attributes : ['id','nickname','email'],
-                include :[
-                    // 작성글정보
-                    {
-                        model : db.Post,
-                        attributes : [id]
-                    },
-                    // 유저의 팔로잉한 정보
-                    {
-                        model : db.user,
-                        attributes : ['id'],
-                        as : 'Followings'
-                    },
-                    // 유저을 팔로잉한 팔로워들 정보
-                    {   
-                        model : db.user,
-                        attributes : ['id'],
-                        as : 'Follwings',
-                    }
-                ]
+                // include :[
+                //     // 작성글정보
+                //     {
+                //         model : db.Post,
+                //         attributes : [id]
+                //     },
+                //     // 유저의 팔로잉한 정보
+                //     {
+                //         model : db.user,
+                //         attributes : ['id'],
+                //         as : 'Followings'
+                //     },
+                //     // 유저을 팔로잉한 팔로워들 정보
+                //     {   
+                //         model : db.user,
+                //         attributes : ['id'],
+                //         as : 'Follwings',
+                //     }
+                // ]
             });
+           
+            
             return res.json(userInfo);
         });
     })(req, res, next);

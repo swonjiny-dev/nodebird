@@ -4,7 +4,10 @@ export const state = () => ({
 
 export const mutations = {
     setUser(state , payload){
-        state.user = payload
+        console.log('aaaaaa');
+        console.log(payload);
+        
+        state.user = payload;
     }
 }
 
@@ -23,7 +26,24 @@ export const actions = {
         .catch((error)=>{
             console.error(error);
             
+        });
+    },
+    login({commit} , payload){
+        this.$axios.post('http://localhost:3001/user/login',{
+            email : payload.email, 
+            password : payload.password,
+        },{
+            withCredentials: true, 
+        })
+        .then((res)=>{
+            commit('setUser' , res.data);
+        })
+        .catch((error)=>{
+            console.log(123);
+            
+            console.error(error);
         })
         ;
     }
+
 }
