@@ -58,7 +58,7 @@ router.post('/' , isNotLoggedIn , async(req , res, next)=>{
         const hash = await bcrypt.hash(req.body.password , 10);
         await db.User.create({
             email : req.body.email,
-            passwprd : hash,
+            password : hash,
             nickname : req.body.nickname,
         });
         // 로그인 시키기
@@ -83,25 +83,25 @@ router.post('/' , isNotLoggedIn , async(req , res, next)=>{
                 const userInfo = await db.User.findOne({
                     where : {id : user.id},
                     attributes : ['id','nickname','email'],
-                    include :[
-                        // 작성글정보
-                        {
-                            model : db.Post,
-                            attributes : [id]
-                        },
-                        // 유저의 팔로잉한 정보
-                        {
-                            model : db.user,
-                            attributes : ['id'],
-                            as : 'Followings'
-                        },
-                        // 유저을 팔로잉한 팔로워들 정보
-                        {   
-                            model : db.user,
-                            attributes : ['id'],
-                            as : 'Follwings',
-                        }
-                    ]
+                    // include :[
+                    //     // 작성글정보
+                    //     {
+                    //         model : db.Post,
+                    //         attributes : [id]
+                    //     },
+                    //     // 유저의 팔로잉한 정보
+                    //     {
+                    //         model : db.user,
+                    //         attributes : ['id'],
+                    //         as : 'Followings'
+                    //     },
+                    //     // 유저을 팔로잉한 팔로워들 정보
+                    //     {   
+                    //         model : db.user,
+                    //         attributes : ['id'],
+                    //         as : 'Follwings',
+                    //     }
+                    // ]
                 });
                 return res.json(userInfo);
             });
@@ -168,7 +168,7 @@ router.post('/logout' , isLoggedIn , (req , res , next)=>{
 });
 
 // 글정보 얻어오기
-router.get('/:id/posts' ,isLoggedIn ,async(req,res,next)=>{
+router.get('/:id/posts' ,async(req,res,next)=>{
     try {
         const user = await db.User.findOne({
             where : {id : req.params.id},
