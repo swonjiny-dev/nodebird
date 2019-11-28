@@ -38,12 +38,20 @@ export const actions = {
         .then((res)=>{
             commit('setUser' , res.data);
         })
-        .catch((error)=>{
-            console.log(123);
-            
+        .catch((error)=>{   
             console.error(error);
+        });
+    },
+    logout({commit}, payload){
+        this.$axios.post('http://localhost:3001/user/logout',{},{
+            withCredentials: true, 
         })
-        ;
+        .then((res)=>{
+            commit('setUser' , null);
+        })
+        .catch((error)=>{
+            console.error(error);
+        });
     }
 
 }

@@ -17,21 +17,21 @@ router.get('/:id' ,async (req ,res,next)=>{
     try {
         const user = await db.User.findOne({
             where : { id: parseInt(req.params.id,10)},
-            include : [
-                {
-                    model : db.Post,
-                    attributes : ['id']
-                },
-                {
-                    model : db.User,
-                    as : 'Followers',
-                    attributes : ['id'] 
-                },{
-                    model : db.User,
-                    as : 'Followings',
-                    attributes : ['id'] 
-                }
-            ]
+            // include : [
+            //     {
+            //         model : db.Post,
+            //         attributes : ['id']
+            //     },
+            //     {
+            //         model : db.User,
+            //         as : 'Followers',
+            //         attributes : ['id'] 
+            //     },{
+            //         model : db.User,
+            //         as : 'Followings',
+            //         attributes : ['id'] 
+            //     }
+            // ]
         });
         res.json(user)
     } catch (error) {
@@ -164,7 +164,6 @@ router.post('/login' ,isNotLoggedIn, (req, res, next)=>{
 router.post('/logout' , isLoggedIn , (req , res , next)=>{
     if(req.isAuthenticated()){
         req.logOut();
-        req.session().destroy();
         return res.status(200).send('로그아웃이 정상적으로 처리되었습니다.');
     }
 });

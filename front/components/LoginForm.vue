@@ -77,7 +77,15 @@ export default {
         },
         logoutEvent(){
             console.log('로그아웃함');
-            
+            this.$store.dispatch('users/logout')
+            .then(()=>{
+                console.log('로그아웃됨');
+                
+            })
+            .catch((error)=>{
+                console.error(error);
+                
+            })
         }
     },
     
