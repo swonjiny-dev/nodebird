@@ -4,10 +4,10 @@ export const state = () => ({
 
 export const mutations = {
     setUser(state , payload){
-        console.log('aaaaaa');
-        console.log(payload);
-        
         state.user = payload;
+    },
+    setNickname(state , payload){
+        state.user.nickname = payload.nickname;
     }
 }
 
@@ -52,6 +52,22 @@ export const actions = {
         .catch((error)=>{
             console.error(error);
         });
+    },
+    changeNickname({ commit }, payload) {
+        try {
+            this.$axios.patch('http://localhost:3001/user/nickname', {
+                nickname : payload.nickname,
+            },{
+                withCredentials: true,  
+            })
+            .then((res)=>{
+                commit('setNickname' , payload);
+            }).catch((error)=>{
+                console.error(error);
+            });
+             
+        } catch (error) {
+            console.error(error);
+        }
     }
-
 }

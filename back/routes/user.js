@@ -181,4 +181,16 @@ router.get('/:id/posts' ,async(req,res,next)=>{
     }
 });
 
+router.patch('/nickname' , async(req,res,next)=>{
+    try {
+        await db.user.update(
+            {where : {id : req.body.nickname}}
+        )
+    } catch (error) {
+        console.error(error);
+        next(error);
+        
+    }
+})
+
 module.exports = router;
