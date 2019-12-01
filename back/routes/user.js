@@ -70,7 +70,7 @@ router.post('/' , isNotLoggedIn , async(req , res, next)=>{
             }
 
             if(info){
-                return req.status(403).send(info.reason);
+                return req.status(401).send(info.reason);
             }
             // req.login passport 에 의해서 적용된
             return req.login(user , async(error)=>{
@@ -121,7 +121,7 @@ router.post('/login' ,isNotLoggedIn, (req, res, next)=>{
         }
 
         if(info){
-            return req.status(403).send(info.reason);
+            return req.status(401).send(info.reason);
         }
         // req.login passport 에 의해서 적용된
         return req.login(user , async(error)=>{
@@ -153,8 +153,6 @@ router.post('/login' ,isNotLoggedIn, (req, res, next)=>{
                 //     }
                 // ]
             });
-           
-            
             return res.json(userInfo);
         });
     })(req, res, next);
@@ -181,11 +179,19 @@ router.get('/:id/posts' ,async(req,res,next)=>{
     }
 });
 
-router.patch('/nickname' , async(req,res,next)=>{
+router.patch('/nickname', isLoggedIn,async(req, res, next) => {
     try {
-        await db.user.update(
-            {where : {id : req.body.nickname}}
-        )
+       await console.log(req.user);
+        
+
+        await db.User.update({
+            nickname: req.body.nickname,
+        }, {
+            where: {
+                id: req.user.id
+            },
+        });
+        res.send(req.body.nickname)
     } catch (error) {
         console.error(error);
         next(error);

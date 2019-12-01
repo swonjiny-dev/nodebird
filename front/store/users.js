@@ -54,20 +54,16 @@ export const actions = {
         });
     },
     changeNickname({ commit }, payload) {
-        try {
-            this.$axios.patch('http://localhost:3001/user/nickname', {
-                nickname : payload.nickname,
-            },{
-                withCredentials: true,  
-            })
-            .then((res)=>{
-                commit('setNickname' , payload);
-            }).catch((error)=>{
-                console.error(error);
-            });
-             
-        } catch (error) {
+        this.$axios.patch('http://localhost:3001/user/nickname', {
+            nickname : payload.nickname,
+        },{
+            withCredentials: true,  
+        })
+        .then((res)=>{
+            commit('setNickname' , payload);
+        }).catch((error)=>{
             console.error(error);
-        }
+        });
+      
     }
 }

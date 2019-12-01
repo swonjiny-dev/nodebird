@@ -12,7 +12,7 @@
                             :rules="nickrules"
                             required
                         ></v-text-field>
-                        <v-btn dark color="blue" :disabled="!validate">수정</v-btn>
+                        <v-btn dark color="blue" type="submit" :disabled="!validate">수정</v-btn>
                     </v-form>
                 </v-container>
             </v-card>
@@ -32,9 +32,7 @@ export default {
         }
     },
     methods: {
-        onSubmitEvent(){
-            console.log('수정시도1');
-            
+        onSubmitEvent(){      
             this.$store.dispatch('users/changeNickname' , {
                 nickname : this.nickname,
             })
