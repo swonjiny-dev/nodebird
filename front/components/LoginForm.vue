@@ -29,6 +29,11 @@
             <v-container>
                 {{user.nickname}} 님 로그인!
                 <v-btn color="success" @click="logoutEvent" >로그아웃</v-btn>
+                <v-row>
+                    <v-col cols="4">팔로잉 {{user.Followings.length}} </v-col>
+                    <v-col cols="4">팔로워 {{user.Followers.length}} </v-col>
+                    <v-col cols="4">게시글 </v-col>
+                </v-row>
             </v-container>
         </v-card>
     </v-container>

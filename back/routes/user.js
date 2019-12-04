@@ -17,21 +17,22 @@ router.get('/:id' ,async (req ,res,next)=>{
     try {
         const user = await db.User.findOne({
             where : { id: parseInt(req.params.id,10)},
-            // include : [
-            //     {
-            //         model : db.Post,
-            //         attributes : ['id']
-            //     },
-            //     {
-            //         model : db.User,
-            //         as : 'Followers',
-            //         attributes : ['id'] 
-            //     },{
-            //         model : db.User,
-            //         as : 'Followings',
-            //         attributes : ['id'] 
-            //     }
-            // ]
+            include : [
+                // {
+                //     model : db.Post,
+                //      as: 'Posts',
+                //     attributes : ['id']
+                // },
+                 {
+                     model : db.User,
+                     as : 'Followers',
+                     attributes : ['id'] 
+                 },{
+                     model : db.User,
+                     as : 'Followings',
+                     attributes : ['id'] 
+                 }
+            ]
         });
         res.json(user)
     } catch (error) {
@@ -83,25 +84,26 @@ router.post('/' , isNotLoggedIn , async(req , res, next)=>{
                 const userInfo = await db.User.findOne({
                     where : {id : user.id},
                     attributes : ['id','nickname','email'],
-                    // include :[
-                    //     // 작성글정보
-                    //     {
-                    //         model : db.Post,
-                    //         attributes : [id]
-                    //     },
-                    //     // 유저의 팔로잉한 정보
-                    //     {
-                    //         model : db.user,
-                    //         attributes : ['id'],
-                    //         as : 'Followings'
-                    //     },
-                    //     // 유저을 팔로잉한 팔로워들 정보
-                    //     {   
-                    //         model : db.user,
-                    //         attributes : ['id'],
-                    //         as : 'Follwings',
-                    //     }
-                    // ]
+                     include :[
+                        // 작성글정보
+                        // {
+                        //     model : db.Post,
+                        //      as: 'Posts',
+                        //     attributes : [id]
+                        // },
+                         // 유저의 팔로잉한 정보
+                         {
+                             model : db.user,
+                             attributes : ['id'],
+                             as : 'Followings'
+                         },
+                         // 유저을 팔로잉한 팔로워들 정보
+                         {   
+                             model : db.user,
+                             attributes : ['id'],
+                             as : 'Follwings',
+                         }
+                     ]
                 });
                 return res.json(userInfo);
             });
@@ -126,32 +128,28 @@ router.post('/login' ,isNotLoggedIn, (req, res, next)=>{
         // req.login passport 에 의해서 적용된
         return req.login(user , async(error)=>{
             if(error){
+                console.error("111111111");
                 console.error(error);
                 return next(error);
             }
             // 세션정보는 id 만 존재하므로 
             const userInfo = await db.User.findOne({
                 where : {id : user.id},
-                attributes : ['id','nickname','email'],
-                // include :[
-                //     // 작성글정보
-                //     {
-                //         model : db.Post,
-                //         attributes : [id]
-                //     },
-                //     // 유저의 팔로잉한 정보
-                //     {
-                //         model : db.user,
-                //         attributes : ['id'],
-                //         as : 'Followings'
-                //     },
-                //     // 유저을 팔로잉한 팔로워들 정보
-                //     {   
-                //         model : db.user,
-                //         attributes : ['id'],
-                //         as : 'Follwings',
-                //     }
-                // ]
+                attributes: ['id', 'email', 'nickname'],
+                include :[
+                    {
+                        model: db.Post,
+                        attributes: ['id'],
+                    }, {
+                        model: db.User,
+                        as: 'Followings',
+                        attributes: ['id'],
+                    }, {
+                        model: db.User,
+                        as: 'Followers',
+                        attributes: ['id'],
+                    }
+                ]
             });
             return res.json(userInfo);
         });
